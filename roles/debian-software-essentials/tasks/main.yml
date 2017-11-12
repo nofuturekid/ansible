@@ -1,0 +1,11 @@
+---
+
+- name: 'Ensure some essential packages are installed'
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - vim
+    - screen
+    - mc
+    - rsync

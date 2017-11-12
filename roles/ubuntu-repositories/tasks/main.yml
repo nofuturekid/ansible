@@ -1,0 +1,44 @@
+---
+
+- name: "Add additional Launchpad repositories"
+  apt_repository:
+    repo: "{{ item }}"
+    codename: "{{ ansible_distribution_release }}"
+    state: present
+  with_items:
+    - "ppa:hlandau/rhea"
+    - "ppa:nijel/phpmyadmin"
+    - "ppa:ondrej/nginx-mainline"
+    - "ppa:ondrej/php"
+    - "ppa:jcfp/nobetas"
+    - "ppa:jcfp/sab-addons"
+    - "ppa:ricotz/unstable"
+    - "ppa:vbernat/haproxy-1.7"
+    - "ppa:webupd8team/java"
+    - "ppa:chris-lea/redis-server"
+
+- name: "MariaDB"
+  block:
+    - name: "Add MariaDB repository"
+      apt_repository:
+        repo: "deb [arch=amd64] http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.2/ubuntu {{ ansible_distribution_release }} main"
+        codename: "{{ ansible_distribution_release }}"
+        filename: "mariadb_{{ ansible_distribution_release  }}"
+        state: present
+    - name: "Add MariaDB repository key"
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: F1656F24C74CD1D8
+
+- name: "Docker"
+  block:
+    - name: "Add Docker repository"
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} edge"
+        codename: "{{ ansible_distribution_release }}"
+        filename: "docker_{{ ansible_distribution_release  }}"
+        state: present
+    - name: "Add Docker repository key"
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: 7EA0A9C3F273FCD8
