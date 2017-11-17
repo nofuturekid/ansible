@@ -1,0 +1,32 @@
+---
+# This playbook deploys the whole application stack in this site.
+#
+# Example:
+# ansible-playbook -i inventories/proxmox site.yml
+
+- hosts: running
+
+  gather_facts: False
+
+  vars_prompt:
+    - name: CONFIRM
+      prompt: Just to confirm you will install stuff
+      default: "no"
+      private: no
+
+  pre_tasks:
+    - name: "Stop deployment"
+      fail:
+        msg: "No deployment this time."
+      when: CONFIRM|lower != 'yes'
+    - name: "Install python Ansible"
+      raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+      register: output
+      changed_when: output.stdout != ""
+    - name: "Gathering Facts"
+      setup:
+
+  roles:
+    - ubuntu-repositories
+    - debian-software-essentials
+    - debian-software-ntp
