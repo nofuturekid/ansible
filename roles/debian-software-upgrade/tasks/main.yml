@@ -9,6 +9,7 @@
   register: updates
   changed_when: False
   when: ansible_os_family == 'Debian'
+  failed_when: updates.rc < 0
   vars:
     ansible_ssh_pipelining: no
 
