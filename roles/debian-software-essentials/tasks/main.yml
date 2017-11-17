@@ -5,7 +5,8 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - vim
+    - aptitude
     - screen
     - mc
     - rsync
+    - vim
